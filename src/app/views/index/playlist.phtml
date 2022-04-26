@@ -1,0 +1,30 @@
+<?php 
+// echo "<pre>";
+// print_r($response['items']);
+
+?>
+<div class="container-fluid mt-1 mb-3">
+    <div class="row justify-content-center">
+     
+<?php
+if($response) 
+{ 
+    echo "<h2>Tracks</h2>";
+    foreach($response['items'] as $k=>$v ){
+       
+ ?>         <div class="col-2 mt-4">
+          <div class="card" >
+         <div class="img-square-wrapper"> </div>
+            <div class="card-body">
+                <p><?php echo $v['track']['name']; ?></p><span><small>(<?php echo ($v['track']['artists'][0]['name']); ?>)</small></span>
+              <form action="../index/remove"><button class="btn border-0 btn-primary" name="btnremove" value="<?php  echo $v['track']['uri']; ?>" ><small>Remove</small></button></form>
+              </div>
+            </div>
+          </div>
+        <?php } }
+        else{
+            echo "result not found";
+        }
+        ?>
+        </div>
+    </div>

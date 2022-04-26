@@ -1,0 +1,80 @@
+
+    <div class="container-fluid mt-1 mb-3">
+    <div class="row justify-content-center">
+     
+<?php
+
+
+if($response) 
+{ 
+    echo "<h2>Tracks</h2>";
+    foreach($response as $k=>$v ){
+      
+ ?>         <div class="col-2 mt-4">
+          <div class="card" >
+          
+         <div class="img-square-wrapper"> <img class="card-img-top" src="<?php echo ($v['album']['images'][0]['url']);
+          ?>"></div>
+            <div class="card-body">
+                <p><?php echo $v['name']; ?></p><span><small>(<?php foreach($v['artists'] as $k=>$n){
+                    echo $n['name'];
+                } ?>)</small></span>
+              <form action="../index/addtoplaylist"><button class="btn border-0 btn-success" name="addtoplay" value="<?php echo $v['uri']; ?>" ><small>Add to playlist</small></button></form>
+              </div>
+            </div>
+          </div>
+        <?php } }
+        else{
+            echo "result not found";
+        }
+        ?>
+      
+      <?php if($artist==1) 
+{ 
+  // echo "<pre>";
+  // print_r(($response2));
+    echo "<h2>Artists</h2>";
+    foreach($response2 as $k=>$v ){
+    
+ ?>         <div class="col-2 mt-4">
+          <div class="card" >
+          
+         <div class="img-square-wrapper"> <img class="card-img-top" src="<?php  echo $v['images'][0]['url'];
+          ?>"></div>
+            <div class="card-body">
+                <p><?php echo $v['name']; ?></p><span class="text-primary"><small>(<?php echo $v['type']; ?>)</small></span>
+              <p>Followers:-<?php echo $v['followers']['total']; ?></p>
+              </div>
+            </div>
+          </div>
+        <?php } }
+       
+        ?>   
+      <?php    
+      if($album==1) 
+{ 
+    echo "<h2>Album</h2>";
+    foreach($response as $k=>$v ){
+    
+ ?>         <div class="col-2 mt-4">
+          <div class="card" >
+          
+         <div class="img-square-wrapper"> <img class="card-img-top" src="../../../public/img/logo_album.png
+          "></div>
+            <div class="card-body">
+                <p><?php echo $v['album']['name']; ?></p><span class="text-primary"><small>(<?php echo $v['album']['type']; ?>)</small></span>
+              <p><small>Realease:-<?php echo $v['album']['release_date']; ?></small></p>
+
+              </div>
+            </div>
+          </div>
+        <?php } }
+       
+        ?>
+      </div>
+   </div>
+    </div>
+  </div>
+
+   
+    </main>

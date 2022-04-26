@@ -1,0 +1,13 @@
+<div class="mt-4">
+    <form action="../index/added">
+<?php 
+
+  foreach($playlist['items'] as $k =>$v)
+  {?>
+               <li class="nav-item">
+                        <button class="btn btn-primary mt-3" value="<?php echo $v['id'];?>" name="btnPlaylist" >  <?php echo($v['name']); ?></button>
+              </li>
+               <?php }?>
+               </form>
+</div>
+
