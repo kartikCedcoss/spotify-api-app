@@ -1,9 +1,10 @@
 <div class="mt-4">
-    <form action="../index/added">
+   
 <?php 
-
+if($this->session->has('spotifyId')){
   foreach($playlist['items'] as $k =>$v)
-  {?>
+ 
+  {?> <form action="../index/added">
                <li class="nav-item">
                         <button class="btn btn-primary mt-3" value="<?php echo $v['id'];?>" name="btnPlaylist" >  <?php echo($v['name']); ?></button>
               </li>
@@ -11,3 +12,7 @@
                </form>
 </div>
 
+<?php }else{
+  echo "please <a href='../login' >Login</a>";
+}
+?>

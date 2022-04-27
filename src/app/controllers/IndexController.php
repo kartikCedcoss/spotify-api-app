@@ -4,7 +4,16 @@ use Phalcon\Mvc\Controller;
 class IndexController extends Controller
 { 
     public function indexAction()
-    {   
+    {  
+       if($this->session->has('spotifyId')){
+        $spotifyId = $this->session->get('spotifyId');
+        $response = $this->api->getUser($spotifyId);
+        $this->view->response = $response;
+       }
+       $response2 = $this->api->getRecommendation();
+       $this->view->response2 = $response2['tracks'];
+    }
+    public function searchAction(){
         $input = $this->request->get('inputSearch');
         $response = $this->api->searchTrack($input);
         $this->view->response =$response['tracks']['items'];
@@ -27,12 +36,13 @@ class IndexController extends Controller
        }else{
            $this->view->album=0;
        }
-       
+
     }
     public function addtoplaylistAction(){
         $trackUri = $this->request->get('addtoplay');
         $this->session->set('trackUri',$trackUri);
-        $playlist = $this->api->getplaylist();
+        $spotifyId = $this->session->get('spotifyId');
+        $playlist = $this->api->getplaylist($spotifyId);
         $this->view->playlist = $playlist;
     }
     public function addedAction(){
@@ -67,5 +77,10 @@ class IndexController extends Controller
           echo "there are some problem";
       }
       
+   }
+   public function dashboardAction(){
+    $spotifyId = $this->session->get('spotifyId');
+    $response = $this->api->getUser($spotifyId);
+    $this->view->response = $response;
    }
 }
