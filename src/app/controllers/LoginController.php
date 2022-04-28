@@ -36,9 +36,9 @@ class LoginController extends Controller
                     ]),
                 ]
             ];
-            $prepUlr = "$url/authorize?" . http_build_query($args['query']);
+            $Url = "$url/authorize?" . http_build_query($args['query']);
             $this->cookies->set("current_email", base64_encode($email), time() + 1800);
-            $this->response->redirect($prepUlr);
+            $this->response->redirect($Url);
         }
        }
        

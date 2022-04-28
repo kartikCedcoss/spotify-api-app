@@ -55,6 +55,9 @@ class Helper
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
+        // echo "<pre>";
+        // print_r($result);
+        // die;
         return $result;
      }
       
