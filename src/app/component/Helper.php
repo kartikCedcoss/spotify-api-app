@@ -36,8 +36,8 @@ class Helper
     return $userprofile->id;
   }  
 
-     public function refresh(){
-         $token = Users::findFirstByid(1);
+     public function refresh($useremail){
+         $token = Users::findFirstByemail($useremail);
          $code = $token->refreshToken;
          $clientId = "44182f04cd3c47338af26aea5fcda396";
          $clientSecret = "4cac734e7fdf42cd8b5f989df7e2b0bb";
@@ -47,7 +47,7 @@ class Helper
           'Content-Type: application/x-www-form-urlencoded',
           'Authorization: Basic ' . base64_encode("$clientId:$clientSecret")
         ]);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST,'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
           'grant_type' => "refresh_token",
           "refresh_token" => $code,
@@ -55,26 +55,9 @@ class Helper
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
-        // echo "<pre>";
-        // print_r($result);
-        // die;
         return $result;
      }
       
-     public function refresh1(){
-      $clientId = "44182f04cd3c47338af26aea5fcda396";
-      $data = array(
-        'client_id'     => $clientId,
-        'redirect_uri'  => "http://localhost:8080/index/refresh",
-        'scope'         =>'playlist-modify-public playlist-read-private playlist-read-collaborative playlist-modify-private user-top-read user-library-read',
-        'response_type' => "code",
-    );
-    
-    $oauth_url = 'https://accounts.spotify.com/authorize?' . http_build_query( $data );;
-
-     }
-
-
     public function searchTrack($input){
         $input = urlencode($input);
         $url = "https://api.spotify.com/v1/search?q=$input&type=track&limit=5";

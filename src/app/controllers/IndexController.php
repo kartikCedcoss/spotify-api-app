@@ -66,8 +66,9 @@ class IndexController extends Controller
        }
    }
    public function refreshAction(){
-       $response = $this->api->refresh();
-       $token = Users::findFirstByid(1);
+       $useremail = $this->session->get('useremail');
+       $response = $this->api->refresh($useremail);
+       $token = Users::findFirstByemail($useremail);
        $token->accessToken = $response['access_token'];
        $success=$token->save();
        if($success){

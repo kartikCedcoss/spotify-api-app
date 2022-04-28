@@ -17,6 +17,13 @@ class LoginController extends Controller
         $pass = $this->request->getPost('pass');
         $user =  Users::findFirst(['conditions' => "email = '$email' AND password = '$pass'"]);
         if($user){
+            $this->session->set('useremail',$user->email);
+        if($user->accessToken != "0"){
+            $userid = $this->api->getUserid($user->accessToken);
+            $this->session->set('spotifyId',$userid);
+            $this->response->redirect('../index');
+        }
+        else{
             $url = "https://accounts.spotify.com";
             $args = [
                 "query" => [
@@ -40,6 +47,10 @@ class LoginController extends Controller
             $this->cookies->set("current_email", base64_encode($email), time() + 1800);
             $this->response->redirect($Url);
         }
+        }
+        else{
+            $this->view->message= "invalid Credentials";
+        }
        }
        
        public function successAction(){
@@ -58,7 +69,8 @@ class LoginController extends Controller
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $data ) );
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: Basic ' . base64_encode( $clientId . ':' . $clientSecret ) ) );
         $result = json_decode( curl_exec( $ch ) );
-        curl_close( $ch );
+    
+        curl_close($ch);
         $user = Users::findFirstByid(1);
         $user->accessToken = $result->access_token;
         $user->refreshToken = $result->refresh_token;
@@ -79,7 +91,8 @@ class LoginController extends Controller
             'name'=>$this->request->getPost('nameInput'),
             'email'=>$this->request->getPost('emailInput'),
             'password'=>$this->request->getPost('passInput'),
-            'spotifyId'=>$this->request->getPost('spotifyInput'),
+            'accessToken'=>"0",
+            'refreshToken'=>"0",
         ]);
         $success= $user->save();
         if($success){
